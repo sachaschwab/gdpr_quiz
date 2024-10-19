@@ -1,0 +1,57 @@
+# Ignore system and IDE files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore Python-related files
+__pycache__/
+*.py[cod]
+*.so
+*.ipynb
+# Ignore virtual environment
+venv/
+env/
+.env
+.venv/
+*.env
+
+# Ignore Jupyter Notebook files
+.ipynb_checkpoints/
+*.ipynb
+
+/content/Material.xlsx
+
+# Ignore custom files
+blueprint.csv
+
+# Ignore logs and databases
+*.log
+*.sqlite3
+
+# Ignore build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# Ignore local configuration files
+config.ini
+settings.local.py
+
+# Ignore package manager directories
+node_modules/
+npm-debug.log
+
+# Ignore compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.out
+
+# Ignore backup files
+*~
+*.bak
+*.swp
+
+# Ensure no trailing spaces
