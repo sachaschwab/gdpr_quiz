@@ -15,7 +15,7 @@ def local_css():
     /* #MainMenu {visibility: hidden;} */
     /* header {visibility: hidden;} */
     .question-button {
-        width: 50% !important;  /* Changed from 30% to 50% */
+        width: 30% !important;
         padding: 0.2rem 0.5rem;
         margin: 0.1rem 0;
         border-radius: 4px;
@@ -56,10 +56,10 @@ def local_css():
         margin: 0.1rem 0;
     }
     .question-button-col {
-        flex: 0 0 50%;  /* Set to 50% width */
+        flex-grow: 1;
     }
     .question-icon-col {
-        flex: 0 0 50%;  /* Set to 50% width */
+        width: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -247,12 +247,12 @@ def main():
     with st.sidebar:
         st.title("GDPR Quiz")
         for i in range(len(st.session_state.current_quiz_round)):
-            col1, col2 = st.columns([1, 1])  # Changed from [4, 1] to [1, 1]
+            col1, col2 = st.columns([4, 1])
             with col1:
                 # Disable the button if cookie consent is not given
                 if st.button(f"Question {i+1}", key=f"q_{i}", use_container_width=True, disabled=not st.session_state.cookie_consent_given):
                     st.session_state.current_question = i
-                    st.rerun()
+                    st.rerun()  # Changed from st.experimental_rerun()
             with col2:
                 if i in st.session_state.answered_questions:
                     is_correct, _ = get_answer_data(st.session_state.current_quiz_round[i], st.session_state.answered_questions[i])
@@ -276,9 +276,9 @@ def main():
     # Main content
     if st.session_state.current_question == -1:
         st.title("Welcome to the GDPR Quiz")
-        st.write("This app is not made for certification test preparation, but can be used to test your knowledge on GDPR.")
+        st.write("This app is not made for certification test preparation, but can be used to test your knowledge on the GDPR. ote that the certification tests are much harder. ")
         st.write("The quiz generates a set of random 10 questions out of the 250 questions in the database.")
-        st.write("Note that the certification tests are much harder. The questions were AI generated but curated by a human expert.")
+        st.write("NThe questions were AI generated but curated by a human expert.")
         st.write("Have fun!")
         # Disable the "Start Quiz" button if cookie consent is not given
         if st.button("Start Quiz", disabled=not st.session_state.cookie_consent_given):
