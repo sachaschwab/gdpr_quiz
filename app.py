@@ -171,8 +171,66 @@ def display_question(question):
                 st.session_state.answered_questions[st.session_state.current_question] = (is_correct, selected_option[0].upper())
                 st.rerun()
 
+def display_cookie_consent():
+    if 'cookie_consent_given' not in st.session_state:
+        st.session_state.cookie_consent_given = False
+
+    if not st.session_state.cookie_consent_given:
+        st.markdown(
+            """
+            <style>
+            .cookie-box {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            .cookie-text {
+                margin-right: 10px;
+            }
+            .consent-button {
+                background-color: orange;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            .accept-button {
+                background-color: #006400;  /* Dark green background */
+                color: white;  /* White text */
+                font-weight: bold;  /* Bold text */
+                border: none;
+                padding: 8px 16px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            """
+            <div class="cookie-box">
+                <div class="cookie-text">We use cookies</div>
+                <a href="https://streamlit.io/privacy-policy" target="_blank">
+                    <button class="consent-button">Read Privacy & Cookies policy</button>
+                </a>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Add the dark green "Accept Privacy & Cookie policy" button using Streamlit
+        if st.button("Accept Privacy & Cookie policy", key="accept_cookies", type="primary"):
+            st.session_state.cookie_consent_given = True
+            st.rerun()
+
 def main():
     local_css()
+    display_cookie_consent()
 
     # Load all quiz data
     all_quiz_data = load_quiz_data()
@@ -191,9 +249,10 @@ def main():
         for i in range(len(st.session_state.current_quiz_round)):
             col1, col2 = st.columns([4, 1])
             with col1:
-                if st.button(f"Question {i+1}", key=f"q_{i}", use_container_width=True):
+                # Disable the button if cookie consent is not given
+                if st.button(f"Question {i+1}", key=f"q_{i}", use_container_width=True, disabled=not st.session_state.cookie_consent_given):
                     st.session_state.current_question = i
-                    st.rerun()
+                    st.rerun()  # Changed from st.experimental_rerun()
             with col2:
                 if i in st.session_state.answered_questions:
                     is_correct, _ = get_answer_data(st.session_state.current_quiz_round[i], st.session_state.answered_questions[i])
@@ -203,7 +262,7 @@ def main():
         # Add "Next Quiz Round" button if all questions are answered
         if len(st.session_state.answered_questions) == len(st.session_state.current_quiz_round):
             if st.sidebar.button(
-                "Next Quizz Round",
+                "Next Quiz Round",
                 key="next_quiz_round",
                 type="primary",
                 use_container_width=True,
@@ -212,7 +271,7 @@ def main():
                 st.session_state.current_quiz_round = get_new_quiz_round(all_quiz_data)
                 st.session_state.current_question = -1
                 st.session_state.answered_questions = {}
-                st.rerun()
+                st.rerun()  # Changed from st.experimental_rerun()
 
     # Main content
     if st.session_state.current_question == -1:
@@ -221,9 +280,10 @@ def main():
         st.write("The quiz generates a set of random 10 questions out of the 250 questions in the database.")
         st.write("Note that the certification tests are much harder. The questions were AI generated but curated by a human expert.")
         st.write("Have fun!")
-        if st.button("Start Quiz"):
+        # Disable the "Start Quiz" button if cookie consent is not given
+        if st.button("Start Quiz", disabled=not st.session_state.cookie_consent_given):
             st.session_state.current_question = 0
-            st.rerun()
+            st.rerun()  # Changed from st.experimental_rerun()
     elif st.session_state.current_question < len(st.session_state.current_quiz_round):
         display_question(st.session_state.current_quiz_round[st.session_state.current_question])
     else:
