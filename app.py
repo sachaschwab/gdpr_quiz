@@ -15,7 +15,7 @@ def local_css():
     /* #MainMenu {visibility: hidden;} */
     /* header {visibility: hidden;} */
     .question-button {
-        width: 60% !important;
+        width: 50% !important;  /* Changed from 30% to 50% */
         padding: 0.2rem 0.5rem;
         margin: 0.1rem 0;
         border-radius: 4px;
@@ -56,10 +56,10 @@ def local_css():
         margin: 0.1rem 0;
     }
     .question-button-col {
-        flex-grow: 1;
+        flex: 0 0 50%;  /* Set to 50% width */
     }
     .question-icon-col {
-        width: 30px;
+        flex: 0 0 50%;  /* Set to 50% width */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -247,12 +247,12 @@ def main():
     with st.sidebar:
         st.title("GDPR Quiz")
         for i in range(len(st.session_state.current_quiz_round)):
-            col1, col2 = st.columns([4, 1])
+            col1, col2 = st.columns([1, 1])  # Changed from [4, 1] to [1, 1]
             with col1:
                 # Disable the button if cookie consent is not given
                 if st.button(f"Question {i+1}", key=f"q_{i}", use_container_width=True, disabled=not st.session_state.cookie_consent_given):
                     st.session_state.current_question = i
-                    st.rerun()  # Changed from st.experimental_rerun()
+                    st.rerun()
             with col2:
                 if i in st.session_state.answered_questions:
                     is_correct, _ = get_answer_data(st.session_state.current_quiz_round[i], st.session_state.answered_questions[i])
