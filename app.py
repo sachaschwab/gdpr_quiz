@@ -275,7 +275,7 @@ def main():
 
     # Main content
     if st.session_state.current_question == -1:
-        st.title("Welcome to the GDPR Quiz")
+        st.title("Welcome to the GDPR Quizz")
         st.write("This App is not made for any certification test preparation, but can be used to test your knowledge on the GDPR. Note that the certification tests are much harder. ")
         st.write("The quiz generates a set of random 10 questions out of the 250 questions in the database.")
         st.write("The questions here were AI generated but curated by a human expert.")
